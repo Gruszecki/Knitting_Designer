@@ -1,7 +1,9 @@
 from random import choice, choices
 
 from PySide6.QtCore import QSize
-from PySide6.QtWidgets import QMainWindow, QPushButton, QLabel, QLineEdit, QHBoxLayout, QWidget, QGridLayout, QSizePolicy
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import QMainWindow, QPushButton, QLabel, QLineEdit, QHBoxLayout, QWidget, QGridLayout, \
+    QSizePolicy, QMenu
 
 
 class MainWindow(QMainWindow):
@@ -29,10 +31,20 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(container)
 
+    def mousePressEvent(self, event):
+        self.label.setText('Mouse pressed')
+        print(event)
 
     def mouseReleaseEvent(self, event):
         self.label.setText('Mouse released')
         print(event)
 
     def mouseMoveEvent(self, event):
-        self.label.setText(f'Tracking {event.globalX()}')
+        self.label.setText(f'Tracking {event.pos()}')
+
+    def contextMenuEvent(self, event):
+        context = QMenu(self)
+        context.addAction(QAction('Test 1', self))
+        context.addAction(QAction('Test 2', self))
+        context.addAction(QAction('Test 3', self))
+        context.exec((event.globalPos()))
